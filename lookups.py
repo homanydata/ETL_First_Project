@@ -1,6 +1,7 @@
 class Enums:
     TOKEN = '5903757228:AAGxXmVHt0Fk7ADTCa3tYdlpJ1FE6NZkrzk'
     DATABASE = 'HabitsBotDB'
+    PORT = 5432
     HOST = 'localhost'
     USER = 'postgres'
     PASSWORD = 'AmHpg23aCc'
@@ -19,3 +20,4 @@ class Messages:
 class Errors:
     DATABASE_CONNECTION_ERROR = ""
     NO_DATA_ERROR = ""
+    No_Error = "all good"

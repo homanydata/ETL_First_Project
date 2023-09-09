@@ -1,33 +1,58 @@
 import psycopg2
-from lookups import Enums
+from lookups import Enums, Errors
+import pandas as pd
 
+# create connection to database
 def create_connection():
     database_connection = psycopg2.connect(
-            dbname=Enums.DATABASE,
-            user=USER,
-            password=PASSWORD,
-            host=HOST,
-            port=PORT
+        database=Enums.DATABASE,
+        user=Enums.USER,
+        password=Enums.PASSWORD,
+        host=Enums.HOST,
+        port=Enums.PORT
         )
     return database_connection
 
-def execute_query(connection, query)
-    try:
-        with self.conn.cursor() as cursor:
-            cursor.execute(query)
-            cursor.commit()
-        return True
-    except:
-        return False
+# Closing / Disposing the db_session connection
+def close_connection(db_session):
+    db_session.close()
 
-def get_query_results(connection, query)
-    with self.conn.cursor() as cursor:
-        cursor.execute(query)
-        results = cursor.fetchall()
+# Closing & Opening Connection to db_session refresh
+def refresh_connection(db_session):
+    db_session.close()
+    db_session = create_connection()
+    return db_session
+
+# Execute SQL function and return result without committing
+def return_query(db_session, query):
+    # get cursor from connection
+    cursor = db_session.cursor()
+    cursor.execute(query)
+    results = cursor.fetchall()
     return results
 
+# GET QUERY AS DF
+def return_query_as_df(db_session, query):
+    query_df = pd.read_sql_query(sql=query, con=db_session)
+    return query_df
 
-# to be fixed and put in suitable place:
+# Executes & Commits Any Query
+def execute_query(db_session,query,values=None):
+    return_code = Errors.No_Error
+    try:
+        cursor = db_session.cursor()
+        if values:
+            cursor.execute(query, values)
+        else:
+            cursor.execute(query)
+        db_session.commit()
+    except:
+        return_code = Errors.NO_DATA_ERROR
+    finally:
+        return return_code
+
+
+# to be revised and used if needed:
 def getHabitID(self, habit_name):
     query = "SELECT habit_id FROM habits WHERE habit_name = %s"
     with self.conn.cursor() as cursor:
@@ -50,38 +75,32 @@ def getUserID(self, chatID):
             self.addUser(chatID)
             return self.getUserID(chatID)
 
-def insert(self, table, columns, values):
+def insert(db_session, table, columns, values):
     placeholders = ', '.join(['%s'] * len(values))
     query = f"INSERT INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
-    with self.conn.cursor() as cursor:
+    with db_session.cursor() as cursor:
         cursor.execute(query, values)
-    self.conn.commit()
+    db_session.commit()
 
 def addUser(self, chatID):
-    self.insert('users', ['chat_id'], [chatID])
+    insert('users', ['chat_id'], [chatID])
 
-def addHabit(self, row):
-    self.insert('habits', ['habit_name'], [row])
+def addHabit(row):
+    insert('habits', ['habit_name'], [row])
 
-def insertrecord(self, row):
-    self.insert('records', ['habit_id', 'user_id', 'duration', 'record_date'], row)
+def insertrecord(row):
+    insert('records', ['habit_id', 'user_id', 'duration', 'record_date'], row)
 
-def addRecord(self, habit_name, duration, date, chat_id):
-    habit_id = self.getHabitID(habit_name)
-    user_id = self.getUserID(chat_id)
+def addRecord(habit_name, duration, date, chat_id):
+    habit_id = getHabitID(habit_name)
+    user_id = getUserID(chat_id)
     # if not habit_id: return 'habit'
     # if not user_id: return 'user'
-    self.insertrecord([habit_id, user_id, duration, date])
+    insertrecord([habit_id, user_id, duration, date])
 
-def get_habits(self, chatID):
+def get_distinct_habits(db_session, chat_id):
     query = "SELECT DISTINCT habit_name"
-    with self.conn.cursor() as cursor:
-        cursor.execute(query, (chatID,))
+    with db_session.cursor() as cursor:
+        cursor.execute(query, (chat_id,))
         result = cursor.fetchone()
         return result[0]
-
-
-def __del__(self):
-    self.conn.close()
-
-def execute_query(query, database)

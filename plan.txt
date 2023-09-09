@@ -1,0 +1,71 @@
+PROJECT OVERVIEW:
+    - postgresql for database, 3 tables, dim_habits, dim_users, fact_records, staging_table
+    - telegram bot built using python telebot library that receives new records
+    - python script that handles new records and initiates migration
+    - flyway migration to create/update warehouse tables (dim tables and agg_tables and views) using psycopg2 library
+    - a dashboard in powerbi is connected to views and automatically refreshed
+
+BOT:
+has 2 commands:
+    - start: sends bot description and use
+    - record: starts recording process, asks and reads habit, duration, and records user and timestamp
+    - week/month/year: sends text message summary of this week/month/year
+    - alldata: asks for confirmation and sends excel file of all of this user records
+
+DATABASE HANDLER:
+offers basic methods to connect to db:
+    - create connection
+    - refresh connection
+    - close connection
+    - execute query
+    - get query result
+    - get query result as pandas dataframe
+
+KEYS:
+    all sensitive enums will be saved in .env file and accessed using python-dotenv library
+    (last step after the project is finished and tested)
+
+LOOKUPS:
+    messages, erros outputs, and any needed saved values will be here
+
+MIGRATION:
+for flyway migration we will only use the logic, loop over sql_files and run them in order, which are:
+    - V0: insert record into staging table, it contains habit_name, user_id and all its details, duration, timestamp
+    - V1: if new record contains a new habit or new user, add that to dim_habits or dim_users accordingly
+    - V2: add record to fact_records table with habit_id and user_id needed
+    - V3: update aggregate tables, which are agg_daily, agg_weekly, agg_monthly, agg_yearly, agg_habit
+    - V4: refresh views (idk what view should I create)
+    - V5: truncate staging table
+
+DASHBOARD:
+we will create a real-time dashboard that shows:
+    - a line graph of records over time
+    - line graph of number of active users over time
+    - line graph of total duration over time
+    - a bar chart of favourite habits
+with a slicer by users full names and slicer by habit_names
+
+VIEWS:
+what views do we need then?
+    - for the 3 line graphs, all get their data from same table, daily_view,
+    which includes daily total records and total_duration for each user for each habit
+    - for the last bar graph we need a view that shows for each habit total records and total_duration for each user
+
+
+so in a nutshell, we need to create 2 aggregate tables: agg_habit & agg_daily
+based on those 2 agg tables we will create 2 view: daily_view & habit_summary_view
+and based on those views we will create our real-time dashboard
+
+PANDAS HANDLER:
+offers basic methods to get specific results for users:
+    - return query as excel
+    - return query as text
+    - get user records
+    - get user this day/week/month/year summary
+it uses prepared summaries sql commands
+
+SUMMARIES SQL COMMANDS:
+list of sql commands used to get a summary for a user
+
+MAIN:
+create a bot instance and run it
