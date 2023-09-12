@@ -1,5 +1,5 @@
 -- V0: Insert Records into Staging Table
-INSERT INTO staging_records (
+INSERT INTO warehouse.stg_records (
     habit_name,
     user_id,
     chat_id,
@@ -9,8 +9,9 @@ INSERT INTO staging_records (
     is_premium,
     language_code,
     duration,
-    timestamp
+    record_date,
+    category_name,
 )
 VALUES 
-    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
 ;

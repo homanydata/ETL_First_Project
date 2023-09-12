@@ -6,20 +6,27 @@ PROJECT OVERVIEW:
     - a dashboard in powerbi is connected to views and automatically refreshed
 
 BOT:
-has 2 commands:
+- when initiated:
+    - a bot is created with token and db_session attributes from Enums in lookups module
+    - migration is scheduled on regular basis (time is specified from lookups module)
+- commands:
     - start: sends bot description and use
-    - record: starts recording process, asks and reads habit, duration, and records user and timestamp
+    - record: starts recording process, asks and reads habit, duration, and records user and timestamp, adds that to staging table
+    - add category adds a new category
     - week/month/year: sends text message summary of this week/month/year
     - alldata: asks for confirmation and sends excel file of all of this user records
 
 DATABASE HANDLER:
 offers basic methods to connect to db:
     - create connection
-    - refresh connection
+    - refresh connection (will be used after every migration)
     - close connection
-    - execute query
-    - get query result
+    - execute query a helper method for any query needs to be executed
+    - get query result (helper method)
     - get query result as pandas dataframe
+    - add new category to dim_category because it is independent from others
+    - get distinct categories
+    - get distinct habits
 
 KEYS:
     all sensitive enums will be saved in .env file and accessed using python-dotenv library
@@ -30,12 +37,17 @@ LOOKUPS:
 
 MIGRATION:
 for flyway migration we will only use the logic, loop over sql_files and run them in order, which are:
-    - V0: insert record into staging table, it contains habit_name, user_id and all its details, duration, timestamp
-    - V1: if new record contains a new habit or new user, add that to dim_habits or dim_users accordingly
-    - V2: add record to fact_records table with habit_id and user_id needed
-    - V3: update aggregate tables, which are agg_daily, agg_weekly, agg_monthly, agg_yearly, agg_habit
-    - V4: refresh views (idk what view should I create)
-    - V5: truncate staging table
+    - V0: create schema
+    - V1: create staging table
+    - V2: insert record into staging table, it contains habit_name, user_id and all its details, duration, timestamp
+    - V3: create dim_category, dim_habit & dim_user
+    - V4: if new record contains a new habit or new user, add that to dim_habits or dim_users accordingly
+    - V5: create fact table
+    - V6: add record to fact_records table with habit_id and user_id needed
+    - V7: create agg_daily table
+    - V8: update agg_daily
+    - V9: create views
+    - V10: truncate staging table
 
 DASHBOARD:
 we will create a real-time dashboard that shows:
@@ -52,9 +64,16 @@ what views do we need then?
     - for the last bar graph we need a view that shows for each habit total records and total_duration for each user
 
 
-so in a nutshell, we need to create 2 aggregate tables: agg_habit & agg_daily
-based on those 2 agg tables we will create 2 view: daily_view & habit_summary_view
+so in a nutshell: 1 aggregate table is enough, agg_daily
+based on this agg tables we will create 2 views: daily_view & habit_summary_view
 and based on those views we will create our real-time dashboard
+
+EXCEL HANDLER:
+offers helper methods for:
+    - creating
+    - writing
+    - reading
+    - deleting excel files
 
 PANDAS HANDLER:
 offers basic methods to get specific results for users:
@@ -62,7 +81,7 @@ offers basic methods to get specific results for users:
     - return query as text
     - get user records
     - get user this day/week/month/year summary
-it uses prepared summaries sql commands
+it uses prepared summaries sql commands, and helper methods in excel_handler
 
 SUMMARIES SQL COMMANDS:
 list of sql commands used to get a summary for a user

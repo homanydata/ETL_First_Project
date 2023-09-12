@@ -5,6 +5,11 @@ class Enums:
     HOST = 'localhost'
     USER = 'postgres'
     PASSWORD = 'AmHpg23aCc'
+    Migration_Interval = 600
+
+class Directories:
+    EXCEL_FILE_DIRECTORY = './excel'
+    CSV_FILE_DIRECTORY = './csv'
 
 class Messages:
     Start = "Hello! I'm your habits recording bot. Use /record to start recording your habits."
