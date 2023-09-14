@@ -1,0 +1,9 @@
+DROP VIEW warehouse.habit_view;
+DROP VIEW warehouse.daily_view;
+DROP TABLE warehouse.agg_daily;
+DROP TABLE warehouse.fct_records;
+DROP TABLE warehouse.dim_habits;
+DROP TABLE warehouse.dim_users;
+DROP TABLE warehouse.dim_category;
+DROP TABLE warehouse.stg_records;
+DROP SCHEMA warehouse;
