@@ -41,11 +41,11 @@ def return_query(db_session, query, values=None):
     return results
 
 # GET QUERY AS DF
-def return_query_as_df(db_session, query, values=None):
+def return_query_as_df(db_session, query, values=None) -> pd.DataFrame:
     if values:
-        query_df = pd.read_sql_query(sql=query, con=db_session, params=values)
+        query_df = pd.read_sql(sql=query, con=db_session, params=values)
     else:
-        query_df = pd.read_sql_query(sql=query, con=db_session)
+        query_df = pd.read_sql(sql=query, con=db_session)
     return query_df
 
 # Executes & Commits Any Query

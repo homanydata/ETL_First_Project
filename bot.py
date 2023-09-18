@@ -5,6 +5,7 @@ from database_handler import *
 import schedule
 from migration import start_migration
 from generate_sample_data import generate_record
+from pandas_handler import get_user_interval_summary
 
 class HabitsBot:
     def __init__(self, is_test):
@@ -19,7 +20,11 @@ class HabitsBot:
         def start_message(message):
             self.bot.send_message(message.chat.id, Messages.Start)
         
-        # i dont think this is necessary
+        @self.bot.message_handler(commands=['day', 'week', 'month', 'year'])
+        def send_corresponding_summary(message):
+            this_month_text_summary = get_user_interval_summary(db_session=self.db_session, user_id=message.from_user.id, interval=message.text[1:])
+            self.bot.send_message(chat_id=message.chat.id, text=this_month_text_summary)
+        
         @self.bot.message_handler(commands=['list'])
         def send_list(message):
             habits_list = get_distinct_habits(db_session=self.db_session, chat_id=message.chat.id)

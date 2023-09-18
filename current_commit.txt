@@ -1,6 +1,6 @@
 changes made:
-- added generating sample data for testing
-- improved testing mechanism and added some changes in main for that
-- added a query specific for testing during migration
-- added current_commit text file for saving notes
-- started working on Admin live dashboard on PowerBI
+- add get_user_interval_summary method to pandas handler, a generalized way to get query as df then return needed summary as text for any interval type
+- added command for this day/week/month/year summary to bot
+- added interval summary query, a general query that gets summary for any needed interval type
+- tested the new command
+- added a phase to the plan concerning habit summary as plot image

@@ -3,7 +3,8 @@ PROJECT OVERVIEW:
     - telegram bot built using python telebot library that receives new records
     - python script that handles new records and initiates migration
     - flyway migration to create/update warehouse tables (dim tables and agg_tables and views) using psycopg2 library
-    - a dashboard in powerbi is connected to views and automatically refreshed
+    - a dashboard in powerbi is connected to views
+    - fast brief text summaries can be provided through telegram bot (pandas & excel in background)
 
 BOT:
 - when initiated:
@@ -13,8 +14,9 @@ BOT:
     - start: sends bot description and use
     - record: starts recording process, asks and reads habit, duration, and records user and timestamp, adds that to staging table
     - add category adds a new category
-    - week/month/year: sends text message summary of this week/month/year
+    - day/week/month/year: sends text message summary of this week/month/year
     - alldata: asks for confirmation and sends excel file of all of this user records
+    - summarize_habit: chooses a habit and gets a plot image summary for it
 
 DATABASE HANDLER:
 offers basic methods to connect to db:
@@ -69,13 +71,6 @@ so in a nutshell: 1 aggregate table is enough, agg_daily
 based on this agg tables we will create 2 views: daily_view & habit_summary_view
 and based on those views we will create our real-time dashboard
 
-EXCEL HANDLER:
-offers helper methods for:
-    - creating
-    - writing
-    - reading
-    - deleting excel files
-
 PANDAS HANDLER:
 offers basic methods to get specific results for users:
     - return query as excel
@@ -83,6 +78,9 @@ offers basic methods to get specific results for users:
     - get user records
     - get user this day/week/month/year summary
 it uses prepared summaries sql commands, and helper methods in excel_handler
+
+Plot Creator:
+it is goal is to use matplotlib to create plots from 2 columns dataframes and return it as image
 
 SUMMARIES SQL COMMANDS:
 list of sql commands used to get a summary for a user

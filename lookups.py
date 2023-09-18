@@ -31,7 +31,7 @@ class Messages:
     Record_done = "Record added successfully!"
     
     Alread_answered_keyboard = 'Already Answered'
-    summary = lambda period: f"This {period} Summary:\n"
+    summary = lambda period: f"This {period.capitalize()} Summary:\n"
 
 class Errors:
     DATABASE_CONNECTION_ERROR = ""
