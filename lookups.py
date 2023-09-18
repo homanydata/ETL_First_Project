@@ -7,7 +7,10 @@ class Enums:
     HOST = 'localhost'
     USER = 'postgres'
     PASSWORD = 'AmHpg23aCc'
-    Migration_Interval = 1
+    Migration_Interval = 10
+
+    def change_interval(n:int):
+        Enums.Migration_Interval = n
 
 class Directories:
     EXCEL_FILE_DIRECTORY = './excel'

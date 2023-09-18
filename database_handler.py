@@ -17,6 +17,7 @@ def create_connection():
 # Closing / Disposing the db_session connection
 def close_connection(db_session):
     db_session.close()
+    
 
 # Closing & Opening Connection to db_session refresh
 def refresh_connection(db_session):
@@ -48,7 +49,7 @@ def return_query_as_df(db_session, query, values=None):
     return query_df
 
 # Executes & Commits Any Query
-def execute_query(db_session,query,values=None):
+def execute_query(db_session, query,values=None):
     return_code = Errors.No_Error
     try:
         cursor = db_session.cursor()
@@ -59,6 +60,7 @@ def execute_query(db_session,query,values=None):
         db_session.commit()
     except Exception as e:
         return_code = str(e)
+        if str(e) == 'connection already closed': print('it is me!!')
     finally:
         return return_code
 
@@ -91,7 +93,11 @@ def get_habit_category(db_session, habit_name):
     values = tuple([habit_name])
     return return_query(db_session=db_session, query=query, values=values)[0][0]
 
-
+def get_distinct_user_ids(db_session):
+    query = "SELECT DISTINCT user_id FROM warehouse.dim_users"
+    result = return_query(db_session=db_session, query=query)
+    user_ids = [row[0] for row in result]
+    return user_ids
 
 # to be revised and seen if needed:
 def getUserID(self, chatID):

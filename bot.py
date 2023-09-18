@@ -4,12 +4,14 @@ from telebot import types
 from database_handler import *
 import schedule
 from migration import start_migration
+from generate_sample_data import generate_record
 
 class HabitsBot:
-    def __init__(self):
+    def __init__(self, is_test):
         self.bot = telebot.TeleBot(Enums.TOKEN)
         self.db_session = create_connection()
         self.temp_habit = None
+        self.test_instance = is_test
         self.perform_migration()
         schedule.every(Enums.Migration_Interval).minutes.do(self.perform_migration)
 
@@ -83,12 +85,18 @@ class HabitsBot:
         add_new_category(db_session=self.db_session, category_name=message.text.lower())
         self.bot.send_message(chat_id=message.chat.id, text=Messages.Category_Added)
 
-    def refresh_connection(self):
+    def refresh_bot_db_connection(self):
         self.db_session = refresh_connection(db_session=self.db_session)
 
     def perform_migration(self):
-        start_migration(db_session=self.db_session, new_data=[])
-        self.refresh_connection()
+        start_migration(db_session=self.db_session, new_data=[], is_test=self.test_instance)
+        self.refresh_bot_db_connection()
     
+    def generate_record(self):
+        generate_record(db_session=self.db_session)
+
     def run(self):
-        self.bot.polling()
+        try:
+            self.bot.polling()
+        except Exception as e:
+            print(e)

@@ -27,6 +27,7 @@ offers basic methods to connect to db:
     - add new category to dim_category because it is independent from others
     - get distinct categories
     - get distinct habits
+    - get habit category (to simplify recordig process with user)
 
 KEYS:
     all sensitive enums will be saved in .env file and accessed using python-dotenv library
@@ -45,9 +46,9 @@ for flyway migration we will only use the logic, loop over sql_files and run the
     - V5: create fact table
     - V6: add record to fact_records table with habit_id and user_id needed
     - V7: create agg_daily table
-    - V8: update agg_daily
-    - V9: create views
-    - V10: truncate staging table
+    - V8: update agg_daily (or V9 if it is a test)
+    - V10: create views
+    - V11: truncate staging table
 
 DASHBOARD:
 we will create a real-time dashboard that shows:
@@ -87,4 +88,8 @@ SUMMARIES SQL COMMANDS:
 list of sql commands used to get a summary for a user
 
 MAIN:
-create a bot instance and run it
+is_test variable is used for making some changes needed for testing, like adding sample data,
+changing aggregating query, reducing migration interval...
+create a bot instance
+an independent thread is created to run any pending job in schedule
+run the bot instance

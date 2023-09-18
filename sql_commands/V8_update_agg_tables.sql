@@ -1,3 +1,4 @@
+-- NOT FOR TEST
 -- get last day aggregated
 CREATE TEMP TABLE LAST_DAY AS (
     SELECT
@@ -8,10 +9,12 @@ CREATE TEMP TABLE LAST_DAY AS (
     LIMIT 1
 )
 ;
+
 -- remove last day froma agg to update it
 DELETE FROM warehouse.agg_daily
 WHERE CAST(record_day AS DATE) = (SELECT * FROM LAST_DAY)
 ;
+
 -- insert new data including last day data aggregation
 INSERT INTO warehouse.agg_daily (record_day, habit_id, category_id, user_id, total_duration, total_records)
 SELECT
@@ -28,4 +31,6 @@ GROUP BY
     habit_id,
     category_id,
     user_id
+ORDER BY
+    CAST(record_date AS DATE)
 ;

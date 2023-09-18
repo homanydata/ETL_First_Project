@@ -1,0 +1,6 @@
+changes made:
+- added generating sample data for testing
+- improved testing mechanism and added some changes in main for that
+- added a query specific for testing during migration
+- added current_commit text file for saving notes
+- started working on Admin live dashboard on PowerBI

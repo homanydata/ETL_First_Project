@@ -1,0 +1,1 @@
+TRUNCATE warehouse.stg_records;
