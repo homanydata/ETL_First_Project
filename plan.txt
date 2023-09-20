@@ -4,7 +4,7 @@ PROJECT OVERVIEW:
     - python script that handles new records and initiates migration
     - flyway migration to create/update warehouse tables (dim tables and agg_tables and views) using psycopg2 library
     - a dashboard in powerbi is connected to views
-    - fast brief text summaries can be provided through telegram bot (pandas & excel in background)
+    - fast brief text summaries or plot images can be provided through telegram bot (pandas, matplotlib & excel in background)
 
 BOT:
 - when initiated:
@@ -16,7 +16,7 @@ BOT:
     - add category adds a new category
     - day/week/month/year: sends text message summary of this week/month/year
     - alldata: asks for confirmation and sends excel file of all of this user records
-    - summarize_habit: chooses a habit and gets a plot image summary for it
+    - summarize: chooses a habit and gets a plot image summary for it
 
 DATABASE HANDLER:
 offers basic methods to connect to db:
@@ -36,7 +36,7 @@ KEYS:
     (last step after the project is finished and tested)
 
 LOOKUPS:
-    messages, erros outputs, and any needed saved values will be here
+    messages, markups, enums, erros outputs, directories... and any needed saved values will be here
 
 MIGRATION:
 for flyway migration we will only use the logic, loop over sql_files and run them in order, which are:
@@ -54,11 +54,11 @@ for flyway migration we will only use the logic, loop over sql_files and run the
 
 DASHBOARD:
 we will create a real-time dashboard that shows:
-    - a line graph of records over time
     - line graph of number of active users over time
     - line graph of total duration over time
     - a bar chart of favourite habits
-with a slicer by users full names and slicer by habit_names
+    - a pie chart of categories
+with a slicer by users full names
 
 VIEWS:
 what views do we need then?
@@ -73,17 +73,27 @@ and based on those views we will create our real-time dashboard
 
 PANDAS HANDLER:
 offers basic methods to get specific results for users:
-    - return query as excel
     - return query as text
     - get user records
     - get user this day/week/month/year summary
-it uses prepared summaries sql commands, and helper methods in excel_handler
+    - get plot image (runs query to get needed df, then, uses create_plot_image from plot_creator module to return plot image)
+it uses prepared summaries sql commands
 
 Plot Creator:
 it is goal is to use matplotlib to create plots from 2 columns dataframes and return it as image
+    - has general create_plot_image method that uses either create_bar_chart or create_line_graph method
+    - then return_plot_as_image method to change a dataframe to image of a plot
+
+Excel Handler:
+    - df to excel method
+    - delete excel file method
 
 SUMMARIES SQL COMMANDS:
-list of sql commands used to get a summary for a user
+needed sql queries to get data for any type of summary for user
+    - all user records
+    - interval summary (this day/week/month/year): results grouped by habits over a specific interval
+    - variable summary
+    - variable type parts distribution (totals for each habit/category)
 
 MAIN:
 is_test variable is used for making some changes needed for testing, like adding sample data,

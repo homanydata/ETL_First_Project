@@ -5,7 +5,8 @@ from database_handler import create_connection, refresh_connection, get_distinct
 import schedule
 from migration import start_migration
 from generate_sample_data import generate_record
-from pandas_handler import get_user_interval_summary, get_plot_image
+from pandas_handler import get_user_interval_summary, get_plot_image, get_user_records
+from excel_handler import df_to_excel
 
 class HabitsBot:
     def __init__(self, is_test):
@@ -26,6 +27,16 @@ class HabitsBot:
         def send_corresponding_summary(message):
             this_month_text_summary = get_user_interval_summary(db_session=self.db_session, user_id=message.from_user.id, interval=message.text[1:])
             self.bot.send_message(chat_id=message.chat.id, text=this_month_text_summary)
+        
+        @self.bot.message_handler(commands=['get_my_data'])
+        def send_user_data_as_excel(message):
+            try:
+                df = get_user_records(db_session=self.db_session, user_id=message.from_user.id)
+                excel_file_directory = df_to_excel(df)
+                self.bot.send_document(chat_id=message.chat.id, document=open(excel_file_directory,'rb'))
+            except Exception as e:
+                print(e)
+                self.bot.send_message(chat_id=message.chat.id, text=Messages.Error_Apologize)
         
         @self.bot.message_handler(commands=['summarize'])
         def ask_variable_type(message):

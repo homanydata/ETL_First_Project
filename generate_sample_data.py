@@ -9,8 +9,8 @@ def generate_record(db_session):
         habit_name = random.choice(habits)
         category_name = get_habit_category(db_session=db_session, habit_name=habit_name)
         duration = random.randint(1,20)*10
-        # user_id = random.choice(get_distinct_user_ids(db_session=db_session))
-        user_id = 2087958901
+        user_id = random.choice(get_distinct_user_ids(db_session=db_session))
+        
         # generate a timestamp within a range of 2 weeks
         now_timestamp = int(time.time())
         seconds_in_1_month = 30*7*24*60*60

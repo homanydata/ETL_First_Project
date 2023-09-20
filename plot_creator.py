@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image
 import io
-from lookups import Colors
 import random
 
 def create_plot_image(source:pd.DataFrame, is_bar:bool, variable_type:str, variable:str):
@@ -38,13 +37,19 @@ def create_bar_chart(source:pd.DataFrame, variable_type:str):
 
 def create_line_graph(source:pd.DataFrame, variable:str, variable_type:str):
     sns.set(style="whitegrid")
-    plt.figure(figsize=(12,6))
+    plt.figure(figsize=(24,12))
     
     x = source.iloc[:, 0]
     y = source.iloc[:,1]
     
-    colors = Colors.All_Colors
-    color = random.choice(colors)
+    All_Colors = [
+    'b', 'blue', 'g', 'green', 'r', 'red', 'c', 'cyan',
+    'm', 'magenta', 'magenta', 'y', 'yellow', 'k', 'black',
+    'blueviolet', 'brown', 'chocolate', 'coral', 'darkblue',
+    'darkgoldenrod','darkgreen','darkviolet','deepskyblue', 'gold',
+    'lightskyblue', 'magenta', 'olive', 'orange']
+
+    color = random.choice(All_Colors)
     ax = sns.lineplot(x=x, y=y, marker='o', markersize=8, color=color, linewidth=2)
     ax.set(xlabel=variable_type.split('_')[0].capitalize(), ylabel="Total Duration (in minutes)")
     plt.title(f"Total Duration by {variable_type.split('_')[0].capitalize()}")

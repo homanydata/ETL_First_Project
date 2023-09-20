@@ -1,4 +1,5 @@
 import telebot
+import os
 
 class Enums:
     TOKEN = '5903757228:AAGxXmVHt0Fk7ADTCa3tYdlpJ1FE6NZkrzk'
@@ -13,8 +14,15 @@ class Enums:
         Enums.Migration_Interval = n
 
 class Directories:
-    EXCEL_FILE_DIRECTORY = './excel'
-    CSV_FILE_DIRECTORY = './csv'
+    EXCEL_FILE_DIRECTORY = 'C:/Ali/Learning/Data Science/On My Own/11- ETL/ETL_First_Project/temporary_excel_files'
+
+    def new_excel_file_directory():
+        files_names = os.listdir(Directories.EXCEL_FILE_DIRECTORY)
+        if files_names:
+            files_versions = [int(file_name.split('.')[0].split('_')[-1]) for file_name in files_names]
+            files_versions.sort()
+            return f"{Directories.EXCEL_FILE_DIRECTORY}/temp_user_data_file_{files_versions[-1]+1}.xlsx"
+        return "C:/Ali/Learning/Data Science/On My Own/11- ETL/ETL_First_Project/temporary_excel_files/temp_user_data_file_1.xlsx"
 
 class Messages:
     Start = "Hello! I'm your habits recording bot. Use /record to start recording your habits."
@@ -27,13 +35,14 @@ class Messages:
     
     Invalid_habit = "Invalid habit. Please choose from the predefined habit list (use /list to see it) or add this as new habit using /add"
     No_Categories = 'Sorry, you need to add a new category first, there is none'
-    
+    Error_Apologize = 'Sorry, an error occured'
+
     Record_habit = "Please enter the name of the habit:"
     Record_duration = "Great! Now, please enter the duration (in minutes):"
     Record_done = "Record added successfully!"
     
     Alread_answered_keyboard = 'Already Answered'
-    summary = lambda period: f"This {period.capitalize()} Summary:\n"
+    summary = lambda period: f"This {period.capitalize()} Summary:/n"
 
 class Errors:
     DATABASE_CONNECTION_ERROR = ""
@@ -79,11 +88,3 @@ class Markups:
         markup.add(all_button)
 
         return markup
-
-class Colors:
-    All_Colors = [
-    'b', 'blue', 'g', 'green', 'r', 'red', 'c', 'cyan',
-    'm', 'magenta', 'y', 'yellow', 'k', 'black', 'w', 'white',
-    'beige', 'bisque', 'blanchedalmond', 'blueviolet', 'brown', 'chocolate', 'coral', 'darkblue',
-    'darkgoldenrod','darkgreen','darkviolet','deepskyblue', 'gold', 'greenyellow', 'lavender', 'lightblue',
-    'lightskyblue', 'magenta', 'olive', 'olivedrab', 'orange']

@@ -1,9 +1,6 @@
 changes made:
-- add PILLOW and matplotlib to requirements
-- create plot creator module: general create_plot_image method that uses either create_bar_chart or create_line_graph method then return_plot_as_image methid to change a dataframe to image of a plot
-- write 2 sql queries for preparing aggregation data of habit or category for the plot
-- write get_plot_image method in pandas_handler that uses create_plot_image from plot_creator module
-- add 2 markups to lookups.Markups for summarize command conversation
-- add summarize command to bot, includes 3 methods: ask_variable_type, ask_variable, send_summary
-- add 2 instance variables to bot to control callbackquery activation, and edited callbackquery handler accordingly
-- add Colors class to lookups
+- add new_excel_file_directory method to Directories class
+- create excel_handler module: df_to_excel, remove_excel_file
+- add get_my_data command to bot
+- add all_user_records query to summaries sql commands
+- removed return as excel from pandas handler
