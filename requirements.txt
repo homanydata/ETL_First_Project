@@ -1,4 +1,6 @@
 pandas
+matplotlib
 telebot
 psycopg2
+PILLOW
 python-dotenv

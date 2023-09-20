@@ -60,7 +60,6 @@ def execute_query(db_session, query,values=None):
         db_session.commit()
     except Exception as e:
         return_code = str(e)
-        if str(e) == 'connection already closed': print('it is me!!')
     finally:
         return return_code
 

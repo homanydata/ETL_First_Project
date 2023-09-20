@@ -1,6 +1,9 @@
 changes made:
-- add get_user_interval_summary method to pandas handler, a generalized way to get query as df then return needed summary as text for any interval type
-- added command for this day/week/month/year summary to bot
-- added interval summary query, a general query that gets summary for any needed interval type
-- tested the new command
-- added a phase to the plan concerning habit summary as plot image
+- add PILLOW and matplotlib to requirements
+- create plot creator module: general create_plot_image method that uses either create_bar_chart or create_line_graph method then return_plot_as_image methid to change a dataframe to image of a plot
+- write 2 sql queries for preparing aggregation data of habit or category for the plot
+- write get_plot_image method in pandas_handler that uses create_plot_image from plot_creator module
+- add 2 markups to lookups.Markups for summarize command conversation
+- add summarize command to bot, includes 3 methods: ask_variable_type, ask_variable, send_summary
+- add 2 instance variables to bot to control callbackquery activation, and edited callbackquery handler accordingly
+- add Colors class to lookups

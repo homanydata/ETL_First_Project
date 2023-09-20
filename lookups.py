@@ -20,6 +20,8 @@ class Messages:
     Start = "Hello! I'm your habits recording bot. Use /record to start recording your habits."
     new_category = 'write the new category name:'
     choose_category = "choose habit's category"
+    choose_variable_type = 'do you want a summary for habits or categories?'
+    choose_variable = 'which do you want to summarize?'
     Category_Added = 'category added successfully'
     Invalid_Category = 'this is invalid category, please next time choose from existing categories, or add this as new category'
     
@@ -56,3 +58,32 @@ class Markups:
         markup.add(button)
         print(markup)
         return markup
+    
+    def Variable_Type_Markup():
+        markup = telebot.types.InlineKeyboardMarkup(row_width=3)
+        buttons = [
+            telebot.types.InlineKeyboardButton("Categories", callback_data="category_name"),
+            telebot.types.InlineKeyboardButton("Habits", callback_data="habit_name")
+        ]
+        markup.add(*buttons)
+        return markup
+
+    def Variable_Markup(variables_list:list[str]):
+        markup = telebot.types.InlineKeyboardMarkup(row_width=3)
+        buttons = [
+            telebot.types.InlineKeyboardButton(variable_name, callback_data=variable_name) for variable_name in variables_list
+        ]
+        markup.add(*buttons)
+        
+        all_button = telebot.types.InlineKeyboardButton(text='All', callback_data="all")
+        markup.add(all_button)
+
+        return markup
+
+class Colors:
+    All_Colors = [
+    'b', 'blue', 'g', 'green', 'r', 'red', 'c', 'cyan',
+    'm', 'magenta', 'y', 'yellow', 'k', 'black', 'w', 'white',
+    'beige', 'bisque', 'blanchedalmond', 'blueviolet', 'brown', 'chocolate', 'coral', 'darkblue',
+    'darkgoldenrod','darkgreen','darkviolet','deepskyblue', 'gold', 'greenyellow', 'lavender', 'lightblue',
+    'lightskyblue', 'magenta', 'olive', 'olivedrab', 'orange']
