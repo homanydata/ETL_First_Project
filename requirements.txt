@@ -1,6 +1,6 @@
 pandas
 matplotlib
+seaborn
 telebot
 psycopg2
 PILLOW
-python-dotenv

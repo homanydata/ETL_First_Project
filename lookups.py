@@ -2,7 +2,6 @@ import telebot
 import os
 
 class Enums:
-    TOKEN = '5903757228:AAGxXmVHt0Fk7ADTCa3tYdlpJ1FE6NZkrzk'
     DATABASE = 'HabitsBotDB'
     PORT = 5432
     HOST = 'localhost'

@@ -1,6 +1,0 @@
-changes made:
-- add new_excel_file_directory method to Directories class
-- create excel_handler module: df_to_excel, remove_excel_file
-- add get_my_data command to bot
-- add all_user_records query to summaries sql commands
-- removed return as excel from pandas handler

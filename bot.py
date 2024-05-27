@@ -1,3 +1,4 @@
+import dotenv
 from lookups import Messages, Enums, Markups
 import telebot
 from telebot import types
@@ -8,9 +9,13 @@ from generate_sample_data import generate_record
 from pandas_handler import get_user_interval_summary, get_plot_image, get_user_records
 from excel_handler import df_to_excel
 
+
+dotenv.load_env()
+
 class HabitsBot:
     def __init__(self, is_test):
-        self.bot = telebot.TeleBot(Enums.TOKEN)
+        token = os.getenv('TOKEN')
+        self.bot = telebot.TeleBot(token)
         self.db_session = create_connection()
         self.temp_habit = None
         self.temp_variable_type = None
